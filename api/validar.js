@@ -8,15 +8,10 @@ module.exports = async (req, res) => {
 
   try {
     let numeroLimpo = numeroOriginal.replace(/\D/g, '');
+    
     const apenasNumero = numeroLimpo.length >= 10 ? numeroLimpo.substring(2) : numeroLimpo;
-    const sequenciaRepetida = /^(\d)\1+$/.test(apenasNumero);
-
-    if (sequenciaRepetida) {
-      return res.status(200).json({ 
-        status: "invalido", 
-        valido: false, 
-        mensagem: "Número composto por dígitos repetidos" 
-      });
+    if (/^(\d)\1+$/.test(apenasNumero)) {
+      return res.status(200).json({ status: "invalido", valido: false, mensagem: "Sequencia repetida" });
     }
 
     let finalPhoneNumber;
@@ -46,13 +41,20 @@ module.exports = async (req, res) => {
 
     const nacional = finalPhoneNumber.nationalNumber;
     const tipo = finalPhoneNumber.getType();
+    
+    const primeiroDigitoAposDDD = nacional.substring(2, 3);
+    const dddReal = nacional.substring(0, 2);
+    
+    const eFixo = ['2', '3', '4', '5'].includes(primeiroDigitoAposDDD);
+    const eCelularReal = (tipo === 'MOBILE' && nacional.length === 11 && !eFixo);
 
     res.status(200).json({
       status: "sucesso",
       valido: true,
-      e_celular_valido: tipo === 'MOBILE' && nacional.length === 11,
+      e_celular_valido: eCelularReal,
+      tipo_detectado: eFixo ? 'FIXED_LINE' : tipo,
       formatado_e164: finalPhoneNumber.format('E.164'),
-      ddd: nacional.substring(0, 2),
+      ddd: dddReal,
       numero_puro: nacional.substring(2),
       correcao_aplicada: correcaoAplicada
     });
