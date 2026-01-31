@@ -8,11 +8,6 @@ module.exports = async (req, res) => {
 
   try {
     let numeroLimpo = numeroOriginal.replace(/\D/g, '');
-    
-    if (numeroLimpo.startsWith('55') && numeroLimpo.length > 11) {
-      numeroLimpo = numeroLimpo.substring(2);
-    }
-
     let finalPhoneNumber;
     let correcaoAplicada = false;
 
