@@ -15,6 +15,7 @@ module.exports = async (req, res) => {
       const ddd = numeroLimpo.substring(0, 2);
       const primeiroDigito = numeroLimpo.substring(2, 3);
       
+      // A correção só ocorre se o número "parecer" um celular (6 a 9)
       if (['6', '7', '8', '9'].includes(primeiroDigito)) {
         const tentativaCorrigida = ddd + '9' + numeroLimpo.substring(2);
         const p = parsePhoneNumberFromString(tentativaCorrigida, regiao);
