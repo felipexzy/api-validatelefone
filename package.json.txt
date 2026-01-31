@@ -1,7 +1,0 @@
-{
-  "name": "api-libphone",
-  "version": "1.0.0",
-  "dependencies": {
-    "libphonenumber-js": "^1.11.1"
-  }
-}
